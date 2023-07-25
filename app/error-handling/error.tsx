@@ -6,7 +6,12 @@ import React from 'react';
 
 export default function Error({ error, reset }: any) {
   React.useEffect(() => {
-    console.log('logging error:', error);
+    try {
+      console.log('logging error:', error);
+      throw new Error('some error!');
+    } catch (error) {
+      console.error(error);
+    }
   }, [error]);
 
   return (
