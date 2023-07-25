@@ -1,0 +1,31 @@
+name: PR Agent
+
+on:
+  pull_request:
+  issue_comment:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: write
+
+jobs:
+  pr_agent_job:
+    runs-on: ubuntu-latest
+    name: Run pr agent on every pull request
+    steps:
+      - name: PR Agent action step
+        id: pragent
+        uses: Codium-ai/pr-agent@main
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          OPENAI_ORG: ${{ secrets.OPENAI_ORG }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          // Changed default due to this PR which reverted the GPT4 model to an older version: https://github.com/Codium-ai/pr-agent/pull/117/files
+          CONFIG.MODEL: gpt-4-0613
+          # Configuration options: https://github.com/Codium-ai/pr-agent/blob/main/pr_agent/settings/configuration.toml
+          PR_REVIEWER.NUM_CODE_SUGGESTIONS: 6
+          PR_REVIEWER.ASK_AND_REFLECT: true
+          PR_REVIEWER.REQUIRE_SCORE_REVIEW: true
+          PR_CODE_SUGGESTIONS.NUM_CODE_SUGGESTIONS: 6 # Increase number of code suggestions
