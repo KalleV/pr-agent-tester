@@ -8,6 +8,7 @@ export default function Error({ error, reset }: any) {
   React.useEffect(() => {
     try {
       console.log('logging error:', error);
+      throw new Error('some error!');
     } catch (error) {
       console.error(error);
     }
